@@ -14,6 +14,7 @@ package File_Priorite is
 
         type File is private;
 		type element is private;
+		type tab_element is array(integer range <>) of element;
 
 		--cree une file pouvant contenir au plus 'Taille' elements
         function Nouvelle_File(Taille: Positive) return File;
@@ -31,6 +32,10 @@ private
 			d: donnee;
 		end record;
 
-        type File_Interne is array(integer range <>) of element;
+        type File_Interne(taille: integer) is record 
+			nb_elements: integer;
+			tab: tab_element(1 .. taille);
+		end record;
+
         type File is access File_Interne;
 end;
