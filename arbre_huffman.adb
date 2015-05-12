@@ -1,5 +1,5 @@
-with Ada.Text_IO, Comparaisons, File_Priorite, ada.integer_text_io, Ada.Streams.Stream_IO;
-use Ada.Text_IO, Comparaisons, ada.integer_text_io, Ada.Streams.Stream_IO;
+with Ada.Text_IO, Comparaisons, File_Priorite, ada.integer_text_io, Ada.Streams.Stream_IO, ada.numerics.elementary_functions, ada.float_text_io;
+use Ada.Text_IO, Comparaisons, ada.integer_text_io, Ada.Streams.Stream_IO, ada.numerics.elementary_functions, ada.float_text_io;
 
 package body Arbre_Huffman is
 
@@ -322,5 +322,49 @@ package body Arbre_Huffman is
 		octet_suivant_code(code_courant, eacces);
 		aux_decompresse_arbre(a, eacces, nombre_feuilles, code_courant, ind);
 	end;
+
+    --cette procédure compare la compression réelle du codage par rapport à la borne minimale
+    procedure compacite(d: dico; freq: tableau_ascii) is
+        --nombre de caractères
+        n: natural := 0;
+        proba_i, entropie, compacite: float := 0.0;
+    begin
+        --on trouve d'abord le nombre de caractères total
+        --ceci sert pour trouver les probabilités de chaque caractère
+        for i in freq'range loop
+            if freq(i) /= 0 then
+                n := n + freq(i);
+            end if;
+        end loop;
+
+        --calcul de l'entropie de la source
+        for i in freq'range loop
+            if freq(i) /= 0 then
+                proba_i := float(freq(i))/float(n);
+                entropie := entropie - proba_i*log(base => 2.0, x => proba_i);
+            end if;
+        end loop;
+
+        new_line;
+        put("L'entropie de la source: ");
+        put(entropie);
+        new_line;
+
+        --calcul de la compacité du codage de huffman
+        for i in freq'range loop
+            if freq(i) /= 0 then
+                proba_i := float(freq(i))/float(n);
+                compacite := compacite + proba_i*float(d(i)'length);
+            end if;
+        end loop;
+        put("La compacité du codage: ");
+        put(compacite);
+        new_line;
+
+        --efficacité du codage
+        put("L'efficacité du codage: ");
+        put(entropie/compacite);
+        new_line;
+    end;
 
 end;

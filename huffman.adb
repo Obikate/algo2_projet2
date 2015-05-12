@@ -137,6 +137,8 @@ procedure Huffman is
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream( Sortie );
 
+        compacite(d, frequences);
+
 		natural'output(sacces, nombre_feuilles);
 		new_line;
 		put("nombre de feuilles");
