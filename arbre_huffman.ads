@@ -1,6 +1,8 @@
-with Ada.Unchecked_Deallocation;
+with Ada.Unchecked_Deallocation, Ada.streams.stream_io;
+use Ada.streams.stream_io;
 
 package Arbre_Huffman is
+	
 	--stockage des frequences
 	type Tableau_Ascii is array(Character) of Natural;
 	--un bit
@@ -20,6 +22,10 @@ package Arbre_Huffman is
 	type Dico is array(Character) of Code;
 	--stocke le code de chaque caractere
 	function Calcul_Dictionnaire(A : Arbre) return Dico;
+
+	procedure compresse_arbre(a: arbre; sacces: in out stream_access);
+
+	procedure decompresse_arbre(a: in out arbre; eacces: in out stream_access; nombre_feuilles: in out natural);
 
 	generic
 		with function Octet_Suivant return Character;

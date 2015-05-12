@@ -1,5 +1,5 @@
-with Ada.Text_IO, Comparaisons, File_Priorite, ada.integer_text_io;
-use Ada.Text_IO, Comparaisons, ada.integer_text_io;
+with Ada.Text_IO, Comparaisons, File_Priorite, ada.integer_text_io, Ada.Streams.Stream_IO;
+use Ada.Text_IO, Comparaisons, ada.integer_text_io, Ada.Streams.Stream_IO;
 
 package body Arbre_Huffman is
 
@@ -19,14 +19,16 @@ package body Arbre_Huffman is
 
 	procedure Affiche_Arbre(A: Arbre) is
 	begin
-		put(a.char);
-	exception
-		when others => 
+        if a.estfeuille then
+    		if a /= null then
+	    		put(a.char);
+            end if;
+        else
 			put("0");
 			affiche_arbre(a.fils(0));
 			put("1");
 			affiche_arbre(a.fils(1));
-
+        end if;
 	end Affiche_Arbre;
 
 	--algo principal : calcul l'arbre a partir des frequences
@@ -48,7 +50,7 @@ package body Arbre_Huffman is
 				insertion(f, frequences(i), arbre_courant);
 			end if;
 		end loop;
-		
+
 		--on construit l'arbre dans la file de priorité
 		--initialisation des variables
 		meilleur(f, prio_1, arbre_min_1, statut_1);
@@ -68,7 +70,7 @@ package body Arbre_Huffman is
 			meilleur(f, prio_2, arbre_min_2, statut_2);
 			suppression(f);
 		end loop;
-		
+
 		--on peut alors récupérer l'arbre final, les variables prio_1 et statut_1 ne servent à rien
 		meilleur(f, prio_1, a, statut_1);
 		return a;
@@ -78,11 +80,10 @@ package body Arbre_Huffman is
 		code_gauche, code_droite: code;
 		nouveau_niveau: natural := niveau + 1;
 	begin
-		--d'abord le cas de base, où on tombe sur une feuille
-		d(a.char) := code_intermediaire;
-
-	exception
-		when others =>
+        if a.estfeuille then
+    		--d'abord le cas de base, où on tombe sur une feuille
+	    	d(a.char) := code_intermediaire;
+        else
 			--dans ce cas, on est tombé sur un branchement
 			--il faut construire des nouveaux codes pour les niveaux inférieurs
 			code_gauche := new tabbits(1..nouveau_niveau);
@@ -94,10 +95,11 @@ package body Arbre_Huffman is
 			code_gauche(code_gauche'last) := 0;
 			code_droite(code_droite'last) := 1;
 			liberer(code_intermediaire);
-			
+
 			--on continue alors de chercher dans l'arbre
 			construction_dico_intermediaire(a.fils(0), nouveau_niveau, code_gauche, d);
 			construction_dico_intermediaire(a.fils(1), nouveau_niveau, code_droite, d);
+        end if;
 	end;
 
 	procedure afficher_dico(d: dico) is
@@ -110,7 +112,7 @@ package body Arbre_Huffman is
 				for j in d(i)'range loop
 					put(d(i)(j));
 				end loop;
-			new_line;
+				new_line;
 			end if;
 		end loop;
 	end;
@@ -121,11 +123,10 @@ package body Arbre_Huffman is
 		niveau: natural := 0;
 	begin
 		construction_dico_intermediaire(a, niveau, code_initial, d);
-		afficher_dico(d);
 		return d;
 	end;
 
-	procedure Decodage_Code(Reste : in out Code;
+	procedure Decodage_Code1(Reste : in out Code;
 		Arbre_Huffman : Arbre;
 		Caractere : out Character) is
 
@@ -138,7 +139,7 @@ package body Arbre_Huffman is
 			if Reste = null then
 				--chargement de l'octet suivant du fichier
 				Reste := new TabBits(1..8);
-				Caractere := Octet_Suivant;
+				--				Caractere := Octet_Suivant;
 				Tmp := Character'Pos(Caractere);
 				for I in Reste'Range loop
 					R := Tmp mod 2;
@@ -147,6 +148,7 @@ package body Arbre_Huffman is
 				end loop;
 			end if;
 			Position_Courante := Position_Courante.Fils(Reste(1)) ;
+			--cas du singleton
 			if Reste'Last = 1 then
 				Liberer(Reste);
 				Reste := null;
@@ -163,6 +165,203 @@ package body Arbre_Huffman is
 			end if;
 		end loop;
 		Caractere := Position_Courante.Char;
+	end;
+
+	--variable d'optimisation
+	--il faut se rappeler de la longueur du code reste en sortant de Decodage_Code. 
+	--pour cela, si on ne veut pas modifier les paramètres de la procédure, ce qui changera aussi
+	--les instructions de huffman.adb, on peut utiliser une variable globale
+	reste_taille: positive;
+	procedure Decodage_Code(Reste : in out Code;
+		Arbre_Huffman : Arbre;                                   
+		Caractere : out Character) is
+
+		Position_Courante : Arbre;
+		Tmp,R : Natural;
+
+	begin
+		Position_Courante := Arbre_Huffman;
+		while not Position_Courante.EstFeuille loop
+			if Reste = null then
+				--chargement de l'octet suivant du fichier
+				Reste := new TabBits(1..8);
+				reste_taille := 8;
+				Caractere := Octet_Suivant;
+				Tmp := Character'Pos(Caractere);
+				for I in Reste'Range loop
+					R := Tmp mod 2;
+					Reste(Reste'Last + Reste'First - I) := R;
+					Tmp := Tmp / 2;
+				end loop;
+			end if;
+			Position_Courante := Position_Courante.Fils(Reste(1)) ;
+			--cas du singleton
+			if reste_taille = 1 then
+				Liberer(Reste);
+				Reste := null;
+			else
+				--on évite l'allocation
+				reste_taille := reste_taille - 1;
+				reste(reste'first .. reste_taille) := reste((reste'first + 1) .. (reste_taille + 1));
+			end if;
+		end loop;
+		Caractere := Position_Courante.Char;
+	end;
+
+	procedure afficher_code(r: code) is
+	begin
+		put("affichage du code:");
+		for i in r'range loop
+			put(r(i));
+		end loop;
+		new_line;
+	end;
+
+	function code_to_int(r: code) return integer is
+		res: integer := 0;
+		puiss_2: integer := 1;
+	begin
+		for i in r'range loop
+			res := r(i)*puiss_2 + res;
+			puiss_2 := puiss_2*2;
+		end loop;
+		return res;
+	end;
+
+	procedure aux_compresse_arbre(a: arbre; sacces: in out stream_access; reste: in out code; ind:in out natural; nb_octets: in out integer) is
+		tmp: integer;
+	begin
+		if a /= null then
+			if ind = 9 then
+				--on a dépassé l'octet, il faut alors écrire 'reste' dans le fichier
+				character'output(sacces, character'val(code_to_int(reste)));
+				nb_octets := nb_octets + 1;
+				ind := 1;
+			end if;
+			if a.estfeuille then
+				--on recupère le code ascii du caractère
+				tmp := character'pos(a.char);
+				--on remplit reste après avoir mis un '1'
+				reste(ind) := 1;
+				--cas spécial: lorsque ind vaut 9 ici
+				ind := ind + 1;
+				for i in ind..reste'last loop
+					--il est à noter ici, qu'on sauvegarde les codes ascii à l'envers
+					reste(i) := tmp mod 2;
+					tmp := tmp/2;
+				end loop;
+				--les caractères qui restent
+				--ecriture de reste dans le fichier
+
+				character'output(sacces, character'val(code_to_int(reste)));
+				nb_octets := nb_octets + 1;
+				for i in 1..(ind-1) loop
+					reste(i) := tmp mod 2;
+					tmp := tmp/2;
+				end loop;
+
+            else
+            	--on est tombé sur un vrai noeud
+	    		reste(ind) := 0;
+		    	ind := ind + 1;
+			    aux_compresse_arbre(a.fils(0), sacces, reste, ind, nb_octets);
+    			aux_compresse_arbre(a.fils(1), sacces, reste, ind, nb_octets);
+            end if;
+		end if;
+	end;
+
+	procedure compresse_arbre(a: arbre; sacces: in out stream_access) is
+		Reste: code := new tabbits(1..8);
+		ind: integer := 1;
+		nb_octets: integer := 0;
+	begin
+		aux_compresse_arbre(a, sacces, reste, ind, nb_octets);
+		--si l'octet n'est pas fini, il faut remplir le reste
+		if ind /= 9 then
+			for i in ind..reste'last loop
+				reste(i) := 0;
+			end loop;
+			character'output(sacces, character'val(code_to_int(reste)));
+			nb_octets := nb_octets + 1;
+		end if;
+
+		new_line;
+		put("nombre d'octets utilisé pour sauvegarder l'arbre");
+		put(nb_octets);
+		new_line;
+	end;
+
+
+	procedure octet_suivant_code(code_courant: out code; eacces: in out stream_access) is
+		--on récupère le caractère
+		char_courant: character := character'input(eacces);
+		--on récupère le code ascii
+		tmp: integer := character'pos(char_courant);
+	begin
+		if code_courant = null then
+			code_courant := new tabbits(1..8);
+		end if;
+		for i in code_courant'range loop
+			code_courant(i) := tmp mod 2;
+			tmp := tmp/2;
+		end loop;
+	end;
+
+	procedure recup_carac(code_courant: out code; ind: integer; eacces: in out stream_access; char_res: out character) is
+		code_intermediaire: code := new tabbits(1..8);
+		ind_aux: integer := 1;
+	begin
+		if code_courant = null then
+			octet_suivant_code(code_courant, eacces);
+		end if;
+		for i in ind .. code_courant'last loop
+			code_intermediaire(ind_aux) := code_courant(i);
+			ind_aux := ind_aux + 1;
+		end loop;
+		--code_courant est à la fin, il faut le recharger
+		octet_suivant_code(code_courant, eacces);
+		--on continue avec le reste du caractère
+		for i in 1 .. (ind - 1) loop
+			code_intermediaire(ind_aux) := code_courant(i);
+			ind_aux := ind_aux + 1;
+		end loop;
+		--on transforme code_intermediaire en un caractère
+		char_res := character'val(code_to_int(code_intermediaire));
+		liberer(code_intermediaire);
+	end;
+
+	procedure aux_decompresse_arbre(a: in out arbre; eacces: in out stream_access; nombre_feuilles: in out natural; code_courant: out code; ind: in out integer) is
+	begin
+		if nombre_feuilles /= 0 then
+			if ind = 9 then
+				--il faut récupérer l'octet suivant
+				octet_suivant_code(code_courant, eacces);
+				ind := 1;
+			end if;
+			--on vérifie si on est sur une feuille ou sur un branchement
+			if code_courant(ind) = 1 then
+				ind := ind + 1;
+				--on a trouvé une feuille
+				a := new noeud(true);
+				recup_carac(code_courant, ind, eacces, a.char);
+				nombre_feuilles := nombre_feuilles - 1;
+			else
+				a := new noeud(false);
+				--on a trouvé un branchement
+				ind := ind + 1;
+				aux_decompresse_arbre(a.fils(0), eacces, nombre_feuilles, code_courant, ind);
+				aux_decompresse_arbre(a.fils(1), eacces, nombre_feuilles, code_courant, ind);
+			end if;
+		end if;
+	end;
+
+	
+	procedure decompresse_arbre(a: in out arbre; eacces: in out stream_access; nombre_feuilles: in out natural) is
+		code_courant: code := new tabbits(1..8);
+		ind: integer := 1;
+	begin
+		octet_suivant_code(code_courant, eacces);
+		aux_decompresse_arbre(a, eacces, nombre_feuilles, code_courant, ind);
 	end;
 
 end;
