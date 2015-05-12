@@ -7,12 +7,15 @@ procedure Huffman is
 	--calcul des frequences d'apparition des lettre dans un fichier
 	procedure Lecture_Frequences(Nom_Fichier: in String ;
 		Frequences : out Tableau_Ascii ;
-		Taille : out Natural) is
+		Taille : out Natural;
+		nombre_feuilles: out natural) is
 
 		Fichier: Ada.Streams.Stream_IO.File_Type;
 		Acces : Stream_Access;
 		Char: Character;
 	begin
+		nombre_feuilles := 0;
+
 		for I in Frequences'range loop
 			Frequences(I) := 0;
 		end loop;
@@ -25,6 +28,9 @@ procedure Huffman is
 			Char := Character'input(Acces);
 			Taille := Taille + 1;
 			Frequences(Char) := Frequences(Char) + 1;
+			if frequences(char) = 1 then
+				nombre_feuilles := nombre_feuilles + 1;
+			end if;
 		end loop;
 		Close(Fichier);
 	end Lecture_Frequences;
@@ -117,16 +123,28 @@ procedure Huffman is
 		Reste : Code;
 		Caractere_Sortie : Character;
 		D : Dico;
+
+		--variables d'optimisations
+		nombre_feuilles: natural;
+
 	begin
-		Lecture_Frequences(Fichier_Entree, Frequences, Taille);
-		Affiche_Frequences(Frequences);
+		Lecture_Frequences(Fichier_Entree, Frequences, Taille, nombre_feuilles);
+--		Affiche_Frequences(Frequences);
 		Arbre_Huffman := Calcul_Arbre(Frequences);
 		Affiche_Arbre(Arbre_Huffman);
+
 		D := Calcul_Dictionnaire(Arbre_Huffman);
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream( Sortie );
+
+		natural'output(sacces, nombre_feuilles);
+		new_line;
+		put("nombre de feuilles");
+		put(nombre_feuilles);
+		new_line;
+		compresse_arbre(arbre_huffman, sacces);
+
 		Natural'Output(Sacces, Taille);
-		Tableau_Ascii'Output(Sacces,Frequences) ;
 		Open(Entree, In_File, Fichier_Entree);
 		EAcces := Stream(Entree);
 		Reste := null;
@@ -145,6 +163,8 @@ procedure Huffman is
 		Entree, Sortie: Ada.Streams.Stream_IO.File_Type;
 		Reste : Code;
 		EAcces, SAcces : Stream_Access;
+		--variables d'optimisation
+		nombre_feuilles: natural;
 
 		function Lecture_Octet_Compresse return Character is
 		begin
@@ -156,8 +176,12 @@ procedure Huffman is
 	begin
 		Open(Entree, In_File, Fichier_Entree);
 		EAcces := Stream( Entree );
+
+		nombre_feuilles := natural'input(eacces);
+		decompresse_arbre(arbre_huffman, eacces, nombre_feuilles);
+
 		Taille := Natural'Input(EAcces);
-		Arbre_Huffman := Calcul_Arbre(Tableau_Ascii'Input(EAcces)) ;
+		Affiche_Arbre(Arbre_Huffman);
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream (Sortie);
 		Reste := null;
