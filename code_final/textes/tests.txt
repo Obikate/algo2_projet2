@@ -1,0 +1,6 @@
+taux de compression (taille_compressé/taille_original):
+
+texte1 : 55 %
+texte2 : 53 %
+texte3 : 283 %
+texte4 : 12,5 %
