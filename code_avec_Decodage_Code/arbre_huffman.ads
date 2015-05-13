@@ -20,7 +20,9 @@ package Arbre_Huffman is
 	type Dico is array(Character) of Code;
 	--stocke le code de chaque caractere
 	function Calcul_Dictionnaire(A : Arbre) return Dico;
-
+	
+	 procedure compacite(d: dico; freq: tableau_ascii);
+	
 	generic
 		with function Octet_Suivant return Character;
 		--decodage_code prend un reste d'octet non decode

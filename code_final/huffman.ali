@@ -1,0 +1,178 @@
+V "GNAT Lib v4.6"
+M P AB W=b
+P SS ZX
+R nnnvnnnnvnvnnnnnnnnnnvnnnvvnnnnvnnnnnnnnnvnnvnvnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnn
+
+U huffman%b		huffman.adb		7c2ac311 NE OO SU
+W ada%s			ada.ads			ada.ali
+W ada.command_line%s	a-comlin.adb		a-comlin.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
+W ada.streams%s		a-stream.ads		a-stream.ali
+W ada.streams.stream_io%s  a-ststio.adb		a-ststio.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W arbre_huffman%s	arbre_huffman.adb	arbre_huffman.ali
+W system%s		system.ads		system.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+W system.stream_attributes%s  s-stratt.adb	s-stratt.ali
+
+D ada.ads		20070406091342 3ffc8e18
+D a-comlin.ads		20100623092347 e0accaa5
+D a-except.ads		20090727140100 0c711ac9
+D a-finali.ads		20090409150019 e5e85fa4
+D a-filico.ads		20090409150019 872dc219
+D a-flteio.ads		20070406091342 e18a47a0
+D a-inteio.ads		20070406091342 f64b89a4
+D a-ioexce.ads		20091130110856 8b9de6cd
+D a-numeri.ads		20080324174807 bb51c45a
+D a-nuelfu.ads		20070406091342 03e83d1c
+D a-ngelfu.ads		20070406091342 47731de9
+D a-stream.ads		20090409150019 2ca4ee37
+D a-ststio.ads		20090409150019 7ca49e01
+D a-tags.ads		20101021101406 c7695348
+D a-textio.ads		20091028140912 386df5d4
+D a-tiflio.ads		20090409150019 56fbda09
+D a-tiinio.ads		20090409150019 aa04e5d6
+D a-unccon.ads		20070406091342 f9eb8f06
+D a-uncdea.ads		20070406091342 f15a5ed1
+D arbre_huffman.ads	20150513184351 da78f38a
+D arbre_huffman.adb	20150513183322 e8b9e112
+D comparaisons.ads	20150513182221 e78129b2
+D file_priorite.ads	20150513182221 d0913cf8
+D huffman.adb		20150513183921 f47c184f
+D interfac.ads		20090409150019 f77d8799
+D i-cstrea.ads		20100622165701 1bd72c32
+D system.ads		20120503154647 23e1f70b
+D s-crtl.ads		20100617122610 ac77b159
+D s-exctab.ads		20090417131547 66e51330
+D s-ficobl.ads		20100909103250 443b9d66
+D s-finimp.ads		20090409150019 46853fe8
+D s-finroo.ads		20090409150019 dbb860c9
+D s-parame.ads		20091130110856 9c5d83fa
+D s-secsta.ads		20090707124243 eea35a36
+D s-soflin.ads		20090729085153 9414c974
+D s-stache.ads		20090417130712 596fc1b4
+D s-stalib.ads		20101021102512 c4241c00
+D s-stoele.ads		20090417130712 facd7d98
+D s-stoele.adb		20100617152355 afc5dc80
+D s-stratt.ads		20100909123135 aedef97e
+D s-traent.ads		20090417130712 5221ee41
+D s-unstyp.ads		20090409150019 6ae15c76
+D s-wchcon.ads		20090417130712 bfeb2e3d
+X 1 ada.ads
+16K9*Ada 19e8 24|1r6 1r19 1r40 1r58 2r5 2r18 2r39 2r57 13r26 56r26 121r33
+. 163r33
+X 2 a-comlin.ads
+38K13*Command_Line 139e21 24|1w44 2r43
+41V13*Argument_Count{natural} 24|204s13
+48V13*Argument{string} 24|212s13 213s29 213s42 215s31 215s44
+65I9*Exit_Status<integer>
+67i4*Success{65I9} 24|218r25
+68i4*Failure{65I9} 24|208r33
+70U14*Set_Exit_Status 24|208s17 218s9
+X 7 a-inteio.ads
+18K13*Integer_Text_IO[17|45] 24|1w23 2r22
+X 12 a-stream.ads
+36K13*Streams 69e16 24|1r62 2r61 13r30 56r30 121r37 163r37
+X 13 a-ststio.ads
+39K21*Stream_IO 221e26 24|1w70 2r69 13r38 56r38 121r45 163r45
+41P9*Stream_Access(12|39R9) 24|14r25 57r32 122r34 165r34
+43P9*File_Type(184R9) 24|13r48 56r48 121r55 163r55
+45n23*In_File{45E9} 24|23r31 148r30 177r30
+45n32*Out_File{45E9} 24|137r32 185r32
+66U14*Create 24|137s17 185s17
+72U14*Open 24|23s17 148s17 177s17
+78U14*Close 24|35s17 155s17 156s17 194s17 195s17
+88V13*End_Of_File{boolean} 24|27s27 73s37 151s28
+90V13*Stream{41P9} 24|24s26 138s27 149s27 178s27 186s27
+X 15 a-textio.ads
+49K13*Text_IO 472e16 24|1w10 2r9
+52P9*File_Type(370R9)
+120V13*Standard_Error{52P9} 24|197s29
+167U14*New_Line 24|49s33 141s17 144s17
+209U14*Put 24|45s33
+242U14*Put 24|197s25
+243U14*Put 24|44s33 46s33 48s33 142s17
+264U14*Put_Line 24|205s17 206s17 207s17
+X 17 a-tiinio.ads
+65U14*Put 24|47s33[7|18] 143s17[7|18]
+X 20 arbre_huffman.ads
+4K9*Arbre_Huffman 45e4 24|1w81 2r80
+7A14*Tableau_Ascii(natural)<character> 24|9r34 40r50 119r30
+9I17*ChiffreBinaire{integer}
+11P14*Arbre(43R14) 24|118r33 160r32
+13V18*Calcul_Arbre{11P14} 24|133s34
+14U19*Affiche_Arbre 24|134s17 184s17
+17A14*TabBits(9I17)<integer> 24|75r54 84r62 97r70
+18P14*Code(17A14) 24|55r57 62r33 123r25 164r25
+19U19*Liberer[19|20] 24|101s49 104s49 110s25
+22A14*Dico(18P14)<character> 24|59r21 125r21
+24V18*Calcul_Dictionnaire{22A14} 24|136s22
+26U19*compresse_arbre 24|145s17
+28U19*decompresse_arbre 24|181s17
+30U19*compacite 24|139s17
+39u27*Decodage_Code 24|174r52
+43R14 Noeud 21|18e14
+X 24 huffman.adb
+4U11*Huffman 4b11 220l5 220t12
+6X9 Fichier_Invalide 198r31
+8U19 Lecture_Frequences 8b19 8>38 9<17 10<17 11<17 36l13 36t31 131s17
+8s38 Nom_Fichier{string} 23r40
+9a17 Frequences{20|7A14} 19r26 20m25 30m25 30r45 31r28
+10i17 Taille{natural} 25m17 29m25 29r35
+11i17 nombre_feuilles{natural} 17m17 32m33 32r52
+13p17 Fichier{13|43P9} 23m22 24r34 27r39 35m23
+14p17 Acces{13|41P9} 24m17 28r49
+15e17 Char{character} 28m25 30r36 30r56 31r39
+19e21 I{character} 20r36
+40U19 Affiche_Frequences 40b19 40>38 52l13 52t31
+40a38 Frequences{20|7A14} 42r26 43r28 47r37
+42e21 I{character} 43r39 45r37 47r48
+55U19 Recuperation_Caractere 55b19 55=42 56>17 57=17 58<17 59>17 114l13 114t35
+. 152s25
+55p42 Reste{20|18P14} 71r29 75m41 76r50 77r49 83m41 84r70 85r50 86r69 88m41
+. 91r34 92r105 96r45 97r82 99r77 101m57 102m49 104m57 105m49 110m33 111m25
+56p17 Entree{13|43P9} 73r49
+57p17 Acces{13|41P9} 80r77
+58e17 Caractere_Sortie{character} 69m17 92m33 92r81
+59a17 D{20|22A14} 83r50
+61i17 Compte{natural} 68m17 70r23 75r68 93m33 93r43 94r36
+62p17 Nouveau_Reste{20|18P14} 84m41 86r49 88r50 97m49 98r58 99r57 102r58
+63e17 Caractere_Entree{character} 80m41 83r52
+76i45 I{integer} 77r55
+85i45 I{integer} 86r63 86r75
+91i29 I{integer} 92r111 96r58 97r95 99r83
+98i53 J{integer} 99r71 99r85
+117U19 Compression 117b19 117>31 117>47 157l13 157t24 213s17
+117s31 Fichier_Entree{string} 131r36 148r39
+117s47 Fichier_Sortie{string} 137r42
+118p17 Arbre_Huffman{20|11P14} 133m17 134r31 136r42 145r33
+119a17 Frequences{20|7A14} 131m52 133r47 139r29
+120i17 Taille{positive} 131m64 147r40
+121p17 Entree{13|43P9} 148m22 149r34 151r40 152r55 155m23
+121p25 Sortie{13|43P9} 137m24 138r35 156m23
+122p17 EAcces{13|41P9} 149m17 152m63
+122p25 SAcces{13|41P9} 138m17 140r32 145m48 147r32 153r42
+123p17 Reste{20|18P14} 150m17 151r52 152m48
+124e17 Caractere_Sortie{character} 152m71 153r50
+125a17 D{20|22A14} 136m17 139r27 152r89
+128i17 nombre_feuilles{natural} 131m72 140r40 143r21
+159U19 Decompression 159b19 159>33 159>57 200l13 200t26 215s17
+159s33 Fichier_Entree{string} 177r39
+159s57 Fichier_Sortie{string} 185r42
+160p17 Arbre_Huffman{20|11P14} 181m35 184r31 190r50
+161i17 Taille{natural} 183m17 189r39 196r38
+161i25 Octets_Ecrits{natural} 188m17 189r23 191m25 191r42 196r21
+162e17 Caractere{character} 190m65 192r50
+163p17 Entree{13|43P9} 177m22 178r35 194m23
+163p25 Sortie{13|43P9} 185m24 186r35 195m23
+164p17 Reste{20|18P14} 187m17 190m43
+165p17 EAcces{13|41P9} 171r48 178m17 180r50 181m50 183r41
+165p25 SAcces{13|41P9} 186m17 192r42
+167i17 nombre_feuilles{natural} 180m17 181m58
+169V26 Lecture_Octet_Compresse{character} 169b26 172t20 174r66
+174U27 Caractere_Suivant[20|39] 21|134b14 24|190s25
+

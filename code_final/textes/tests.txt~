@@ -1,0 +1,28 @@
+taux de compression (taille_compressé/taille_original):
+
+texte1 : 55 %
+texte2 : 53 %
+texte3 : 283 %
+texte4 : 12,5 %
+
+texte 1:
+L'entropie de la source:  4.14741E+00
+La compacité du codage:  4.17913E+00
+L'efficacité du codage:  9.92410E-01
+
+texte 2:
+L'entropie de la source:  4.17355E+00
+La compacité du codage:  4.20792E+00
+L'efficacité du codage:  9.91832E-01
+
+texte 3:
+L'entropie de la source:  2.25163E+00
+La compacité du codage:  2.33333E+00
+L'efficacité du codage:  9.64984E-01
+
+texte 4:
+L'entropie de la source:  3.10033E-02
+La compacité du codage:  1.00000E+00
+L'efficacité du codage:  3.10033E-02
+
+

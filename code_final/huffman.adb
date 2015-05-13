@@ -136,7 +136,7 @@ procedure Huffman is
 		D := Calcul_Dictionnaire(Arbre_Huffman);
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream( Sortie );
-
+		Compacite(D,Frequences);
 		natural'output(sacces, nombre_feuilles);
 		new_line;
 		put("nombre de feuilles");

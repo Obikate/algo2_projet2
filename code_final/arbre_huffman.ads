@@ -26,7 +26,9 @@ package Arbre_Huffman is
 	procedure compresse_arbre(a: arbre; sacces: in out stream_access);
 
 	procedure decompresse_arbre(a: in out arbre; eacces: in out stream_access; nombre_feuilles: in out natural);
-
+	
+	procedure compacite(d: dico; freq: tableau_ascii);
+	
 	generic
 		with function Octet_Suivant return Character;
 		--decodage_code prend un reste d'octet non decode

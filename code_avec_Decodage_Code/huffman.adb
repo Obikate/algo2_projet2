@@ -125,6 +125,7 @@ procedure Huffman is
 		D := Calcul_Dictionnaire(Arbre_Huffman);
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream( Sortie );
+		Compacite(D,Frequences);
 		Natural'Output(Sacces, Taille);
 		Tableau_Ascii'Output(Sacces,Frequences) ;
 		Open(Entree, In_File, Fichier_Entree);
