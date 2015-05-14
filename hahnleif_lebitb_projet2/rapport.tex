@@ -54,8 +54,15 @@ La compilation de l'archive se fera en lançant la commande \verb+$make all+ et 
 	\end{enumerate}
 
 \section{Tests de validation et d'expérimentation} 
-
-\large Résultats en fonction des textes : \\
+\begin{itemize}
+\item Le texte \verb+texte1.txt+ est un texte aléatoire généré par Lorem Ipsum de 3 paragraphes de taille 1725 octects.
+\item Le texte \verb+texte2.txt+ est un texte aléatoire généré par Lorem Ipsum de 20 paragraphes de taille 7522 octects.
+\item Le texte \verb+texte3.txt+ est la chaine de caractères `hello' de taille 6 octects.
+\item Le texte \verb+shakespeare.txt+ est l'ensemble des oeuvres de William Shakespeare de taille 5589917 octects.
+\end{itemize}
+Le choix des exemples à été fait de manière à avoir des textes de tailles différentes pour pouvoir comparer les résultats.\\\\
+\vspace{5mm}
+\textbf{ Résultats en fonction des textes :} \\\\
 \begin{tabular}{|l|c|c|c|r|}
 \hline
 & texte1 & texte2 & texte3 & shakespeare \\
@@ -73,7 +80,12 @@ Taux de compression & & & & \\
 (stockage de l'arbre) & 0.55  & 0.53  & 2.83  &  0.59\\
 \hline
 Temps d'exécution & & & &\\
-(en seconde) & 0.00 & 0.00 & 0.00 & 1.24s \\
+(en seconde) & 0.00 & 0.00 & 0.00 & 1.24 \\
 \hline
 \end{tabular}
+\\\\
+Le test de validation pour la décompression peut s'effectuer en tapant la commande :\\
+\verb+diff tests/<nom_fichier_texte>+\\
+\verb+ resultats/<dossier_version_code>/<nom_fichier_texte>+ pour vérifier que l'on a bien 2 fichiers identiques avant et après décompression.
+\subsection{Interprétaion des résultats}
 \end{document}
