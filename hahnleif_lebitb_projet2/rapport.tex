@@ -88,4 +88,12 @@ Le test de validation pour la décompression peut s'effectuer en tapant la comma
 \verb+diff tests/<nom_fichier_texte>+\\
 \verb+ resultats/<dossier_version_code>/<nom_fichier_texte>+ pour vérifier que l'on a bien 2 fichiers identiques avant et après décompression.
 \subsection{Interprétaion des résultats}
+\begin{itemize}
+	\item En calculant l'efficacité du codage, on vérifie expérimentalement que le code de Huffman est un codage optimal. Ici il donne une efficacité supérieure à $92\%$.
+	\item Les taux de compression pour les 3 premiers textes nous montrent l'avantage de compresser l'arbre au lieu du tableau de fréquences. Par exemple pour le premier texte, on passe d'un "gonflement" du fichier original (taux de compression > 1) à une vraie compression en utilisant cette méthode. La justification pour cela se trouve dans le sujet même. \\
+		Le texte3 est trop petit pour qu'une compression aurait pu avoir un effet positif, car il faut dans tous les cas sauvegarder les structures (tableau ou arbre).\\
+		Finalement, dans le cas d'un très grand fichier, ici les \oe{}uvres de Shakespeare, on constate qu'entre les deux méthodes, il n'y a pratiquement aucune différence concernant le taux de compression. Ceci est du au fait que les strucutres sauvegardées sont négligeables par rapport au nombre de caractères à coder.
+	\item Nous avons également constaté que le temps d'exécution ne varie pratiquement pas entre les différentes versions implémentées.
+
+\end{itemize}
 \end{document}
