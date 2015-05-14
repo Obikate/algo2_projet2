@@ -18,6 +18,21 @@
 \section{Structure de l'archive et avancement du projet}
 
 \section{Détails de l'implémentation}
+	La structure générale du compresseur était déjà imposée, alors on va juste expliquer les choix qu'on a fait lors de l'implémentation.
+	\begin{enumerate}
+		\item{File de priorité}\\
+			Nous avons opté pour une représentation par un tas en utilisant un type d'enregistrement. \\
+			Tout au long de son utilisation, nous avons besoin du nombre courant d'éléments qui se trouvent dans la file. On peut donc soit utiliser une variable globale résidant dans le fichier \verb+file_priorite.adb+ soit déclarer la file comme un type d'enregistrement. Pour ne pas avoir des effets de bords, nous avons choisi un type d'enregistrement.\\
+			L'implémentation des fonctions gérant la file est classique, tout en respectant qu'ici nous avons besoin de l'élément le moins prioritaire en "haut" du tas. Il s'agit donc d'une file de priorité "inversée".
+		\item{Affichage de l'arbre}\\
+			En pratique, l'arbre de Huffman sera trop encombrant pour bien l'afficher sur la sortie standard. Ainsi, on a choisi un affichage rudimentaire qui représente les n\oe{}uds sous forme des $0$ et dès qu'on tombe sur une feuille, il affiche le caractère correspondant. Cet affichage ne sert qu'au débogage.
+		\item{Calcul de l'arbre}
+			On a utilisé l'algorithme classique pour la construction récursive de l'arbre de Huffman, i.e. on fusionne à chaque itération les deux n\oe{}uds qui ont la probabilité la plus petite jusqu'à ce qu'il ne reste qu'un seul n\oe{}ud.
+		\item{Calcul du dictionnaire}
+			Le code associé à un caractère s'obtient en parcourant l'arbre et en se souvenant à chaque branchement de la direction (gauche ou droite) choisie.\\
+			Ici, on a rencontré l'obstacle suivant: on ne connait pas d'avance la longueur du code. Or, le code sera stocké dans un tableau dont la déclaration nécessite cette information.\\
+			Pour contourner ce problème, on pourrait effectuer une recherche d'élément dans l'arbre. Mais comme il n'existe pas de relation d'ordre dans l'arbre de Huffman, celle-ci serait en $\mathcal{O}(n)$.
+	\end{enumerate}
 
 \section{Tests de validation et d'expérimentation} 
 
