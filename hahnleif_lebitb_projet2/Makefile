@@ -3,7 +3,7 @@ all:
 	gnatmake ./src/huffman_sans_optimisation
 	gnatmake ./src/huffman_decodage_code
 	gnatmake ./src/huffman_final
-	./script_tests
+	./script_tests.sh
 
 clean:
 	gnatclean huffman_sans_optimisation
