@@ -28,18 +28,28 @@ La compilation de l'archive se fera en lançant la commande \scriptsize{\textbf{
 \section{Détails de l'implémentation}
 	La structure générale du compresseur était déjà imposée, alors on va juste expliquer les choix qu'on a fait lors de l'implémentation.
 	\begin{enumerate}
+		\item{Style de codage}\\
+			Nous avons volontairement choisi d'utiliser un style de codage différent par rapport à celui du code déjà présent (p.ex. l'utilisation des caractères majuscules) pour permettre au correcteur de bien distinguer quelles parties ont été faites par nous.
 		\item{File de priorité}\\
 			Nous avons opté pour une représentation par un tas en utilisant un type d'enregistrement. \\
 			Tout au long de son utilisation, nous avons besoin du nombre courant d'éléments qui se trouvent dans la file. On peut donc soit utiliser une variable globale résidant dans le fichier \verb+file_priorite.adb+ soit déclarer la file comme un type d'enregistrement. Pour ne pas avoir des effets de bords, nous avons choisi un type d'enregistrement.\\
 			L'implémentation des fonctions gérant la file est classique, tout en respectant qu'ici nous avons besoin de l'élément le moins prioritaire en "haut" du tas. Il s'agit donc d'une file de priorité "inversée".
 		\item{Affichage de l'arbre}\\
 			En pratique, l'arbre de Huffman sera trop encombrant pour bien l'afficher sur la sortie standard. Ainsi, on a choisi un affichage rudimentaire qui représente les n\oe{}uds sous forme des $0$ et dès qu'on tombe sur une feuille, il affiche le caractère correspondant. Cet affichage ne sert qu'au débogage.
-		\item{Calcul de l'arbre}
+		\item{Calcul de l'arbre}\\
 			On a utilisé l'algorithme classique pour la construction récursive de l'arbre de Huffman, i.e. on fusionne à chaque itération les deux n\oe{}uds qui ont la probabilité la plus petite jusqu'à ce qu'il ne reste qu'un seul n\oe{}ud.
-		\item{Calcul du dictionnaire}
+		\item{Calcul du dictionnaire}\\
 			Le code associé à un caractère s'obtient en parcourant l'arbre et en se souvenant à chaque branchement de la direction (gauche ou droite) choisie.\\
 			Ici, on a rencontré l'obstacle suivant: on ne connait pas d'avance la longueur du code. Or, le code sera stocké dans un tableau dont la déclaration nécessite cette information.\\
-			Pour contourner ce problème, on pourrait effectuer une recherche d'élément dans l'arbre. Mais comme il n'existe pas de relation d'ordre dans l'arbre de Huffman, celle-ci serait en $\mathcal{O}(n)$.
+			Pour contourner ce problème, on pourrait effectuer une recherche d'élément dans l'arbre. Mais comme il n'existe pas de relation d'ordre dans l'arbre de Huffman, celle-ci serait en $\mathcal{O}(n)$, en notant n le nombre de feuilles de l'arbre.
+			Nous avons donc choisi d'utiliser un pointer de notre tableau, de déclarer à chaque étape un nouveau tableau, de transmettre les anciennes informations et de libérer l'ancien tableau. La taille du nouveau tableau a été incrémenté par $1$. 
+			Nous sommes bien conscients que cette solution est également couteux en temps, car le transfert de l'ancien vers le nouveau tableau est au pire cas en $\mathcal{O}(h)$ où h est la hauteur de l'arbre. Cette considération fait que le calcul d'un seul code est en $\mathcal{O}(h^2)$. 
+			Ainsi, la fonction \verb+Calcul_Dictionnaire+ est en $\mathcal{O}(nh^2)$.
+		\item{Amélioration du décodage de code}\\
+			Le problème de cette procédure était la réallocation et libération du \verb+TabBits+ à chaque étape. On a contourné ce problème en ajoutant une variable globale qui se rappelle de la dernière position dans le tableau désigné par la variable \verb+Reste+. Ainsi, quand on rappelle la fonction \verb+Decodace_Code+, on peut utiliser un tableau auxiliaire unique en parcourant l'arbre.
+		\item{Encodage de l'arbre}
+			Nous avons choisi d'encoder l'arbre comme il a été suggéré par le sujet, i.e. on représente les n\oe{}uds par un $0$ et les feuilles par un $1$. L'implémentation n'est pas compliquée en tant que soi grâce à l'exemple de la fonction \verb+Decodage_Code+ qui effectue en quelque sorte l'opération inverse.\\
+			À part de l'arbre, on sauvegarde aussi le nombre de feuilles dans le fichier compressé pour pourvoir le décompresser.
 	\end{enumerate}
 
 \section{Tests de validation et d'expérimentation} 
